@@ -3,6 +3,7 @@ package org.amad.rubik;
 import com.jme3.app.SimpleApplication;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
+import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
 import com.jme3.post.FilterPostProcessor;
 import com.jme3.post.filters.CartoonEdgeFilter;
@@ -23,6 +24,7 @@ public class Game extends SimpleApplication {
         ColorRGBA colors[] = {ColorRGBA.Cyan, ColorRGBA.Green, ColorRGBA.Red};
         
         
+        // generate cubes
         for(int z = 0; z < 3; z++) {
             for (int i = 0; i < LINS; i++) {
                 for (int j = 0; j < COLS; j++) {
@@ -37,6 +39,11 @@ public class Game extends SimpleApplication {
         }
         
         viewPort.setBackgroundColor(ColorRGBA.White);
+        
+        // translate camera to a nice position
+        cam.setLocation(new Vector3f(6.5f, 5.f, 7f));
+        // make the cam look at the ZERO coords for a perspective view
+        cam.lookAt(Vector3f.ZERO, cam.getUp());
         
         // enable cell shading
         FilterPostProcessor fpp = new FilterPostProcessor(assetManager);
