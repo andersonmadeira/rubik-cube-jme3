@@ -3,8 +3,11 @@ package org.amad.rubik;
 import com.jme3.app.SimpleApplication;
 import com.jme3.light.AmbientLight;
 import com.jme3.light.DirectionalLight;
+import com.jme3.light.PointLight;
+import com.jme3.light.SpotLight;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
+import com.jme3.math.FastMath;
 import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
 import com.jme3.post.FilterPostProcessor;
@@ -14,6 +17,7 @@ import com.jme3.renderer.queue.RenderQueue;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Spatial;
 import com.jme3.scene.shape.Box;
+import com.jme3.system.AppSettings;
 
 /**
  * test
@@ -33,28 +37,28 @@ public class Game extends SimpleApplication {
                     cubes[i][j] = assetManager.loadModel("Models/Cube/Cube.j3o");
                     cubes[i][j].scale(0.5f);
                     //cubes[i][j] = new Geometry("Box", new Box(0.5f, 0.5f, 0.5f));
-                    cubes[i][j].setLocalTranslation(new Vector3f(1.01f*j, 1.01f*i, 1.01f*z));
+                    cubes[i][j].setLocalTranslation(new Vector3f(1f*j, 1f*i, 1f*z));
                     rootNode.attachChild(cubes[i][j]);
                 }
             }
         }
         
-        // adds a directional light so we can view the cubes
-        AmbientLight sun = new AmbientLight();
-        //sun.setDirection(new Vector3f(6.5f, 5.f, 7f));
-        rootNode.addLight(sun);
-        
-        viewPort.setBackgroundColor(ColorRGBA.White);
+        viewPort.setBackgroundColor(ColorRGBA.LightGray);
         
         // translate camera to a nice position
         cam.setLocation(new Vector3f(6.5f, 5.f, 7f));
         // make the cam look at the ZERO coords for a perspective view
         cam.lookAt(Vector3f.ZERO, cam.getUp());
         
-        // enable cell shading
-//        FilterPostProcessor fpp = new FilterPostProcessor(assetManager);
-//        fpp.addFilter(new CartoonEdgeFilter());
-//        viewPort.addProcessor(fpp);
+        // sets the spot light to be in front of the cube point to it.
+        SpotLight spot = new SpotLight();
+        spot.setSpotRange(100f);                           // distance
+        spot.setSpotInnerAngle(15f * FastMath.DEG_TO_RAD); // inner light cone (central beam)
+        spot.setSpotOuterAngle(35f * FastMath.DEG_TO_RAD); // outer light cone (edge of the light)
+        spot.setColor(ColorRGBA.White.mult(2.3f));         // light color
+        spot.setPosition(cam.getLocation());               // shine from camera loc
+        spot.setDirection(cam.getDirection());             // shine forward from camera loc
+        rootNode.addLight(spot);
     }
 
     @Override
