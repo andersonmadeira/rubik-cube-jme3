@@ -15,6 +15,7 @@ import com.jme3.post.filters.CartoonEdgeFilter;
 import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.queue.RenderQueue;
 import com.jme3.scene.Geometry;
+import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.jme3.scene.shape.Box;
 import com.jme3.system.AppSettings;
@@ -26,6 +27,8 @@ import com.jme3.system.AppSettings;
 public class Game extends SimpleApplication {
     private static int LINS = 3, COLS = 3;
     private Spatial cubes[][];
+    private Node xPivot, yPivot, zPivot;
+    
     @Override
     public void simpleInitApp() {
         cubes = new Spatial[LINS][COLS];
@@ -59,6 +62,10 @@ public class Game extends SimpleApplication {
         spot.setPosition(cam.getLocation());               // shine from camera loc
         spot.setDirection(cam.getDirection());             // shine forward from camera loc
         rootNode.addLight(spot);
+        
+        /**
+         * @todo: rotate the cubes.
+         */
     }
 
     @Override
